@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <form class="col form-inline mb-4">
+            <input class="form-control mr-sm-2" name="searchTerm" [(ngModel)]="searchTerm" type="search"
+                placeholder="Search Contacts...">
+            <button class="btn my-2 my-sm-0" type="submit" (click)="onSearch()">Search</button>
+        </form>
+        <div class="col">
+
+            <a routerLink="/add" class="btn text-white bg-secondary">Add Contact</a>
+
+        </div>
+    </div>
+    <div *ngIf="loaded && count >1" class="text-primary ml-2 mb-4 row">
+        {{count}} contacts fetched. {{searchDisplayString}}
+    </div>
+    <div *ngIf="loaded && count==1" class="text-primary ml-2 mb-4 row">
+        {{count}} contact fetched. {{searchDisplayString}}
+    </div>
+    <div *ngIf="loaded && count == 0" class="text-primary ml-2 mb-4 row">
+        No contacts available.
+    </div>
+
+    <div class="row card-group" *ngIf="loaded && contacts.length > 0">
+
+        <div class="col-3" *ngFor="let contact of contacts">
+            <div class="card mb-3 bg-light" style="width:15rem;">
+                <div class="card-body">
+                    <h5 *ngIf="contact.first_name !== '' && contact.middle_name !== '' && contact.last_name !== ''"
+                        class="card-title mb-4">{{contact.first_name}} {{contact.middle_name}} {{contact.last_name}}
+                    </h5>
+                    <h5 *ngIf="contact.first_name !== '' && contact.middle_name === '' && contact.last_name !== ''"
+                        class="card-title mb-4">{{contact.first_name}} {{contact.last_name}}
+                    </h5>
+                    <div *ngFor="let addressVal of contact.addresses">
+                        <h6 class="card-subtitle  text-secondary" *ngIf="addressVal.address_type !== ''">Address :
+                            {{addressVal.address_type}}</h6>
+                        <h6 class="card-subtitle  text-secondary" *ngIf="addressVal.address_type == ''">Address :</h6>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address !== '' && addressVal.city !== '' && addressVal.states !== '' && addressVal.zip !== 0">
+                            {{addressVal.address}}, <br> {{ addressVal.city}},
+                            {{addressVal.states}},<br> {{addressVal.zip}} </p>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address !== '' && addressVal.city !== '' && addressVal.states !== '' && addressVal.zip == 0">
+                            {{addressVal.address}}, <br> {{ addressVal.city}},
+                            {{addressVal.states}}</p>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address === '' && addressVal.city !== '' && addressVal.states !== '' && addressVal.zip !== 0">
+                            {{ addressVal.city}},
+                            {{addressVal.states}},<br> {{addressVal.zip}} </p>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address === '' && addressVal.city === '' && addressVal.states !== '' && addressVal.zip !== 0">
+                            {{addressVal.states}},<br> {{addressVal.zip}} </p>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address === '' && addressVal.city !== '' && addressVal.states === '' && addressVal.zip !== 0">
+                            {{addressVal.city}},<br> {{addressVal.zip}} </p>
+                        <p class="card-text mb-2"
+                            *ngIf="addressVal.address === '' && addressVal.city === '' && addressVal.states === '' && addressVal.zip !== 0">
+                            {{addressVal.zip}} </p>
+                    </div>
+                    <div *ngFor="let phone of contact.phones">
+                        <h6 class="card-subtitle text-secondary ">Phone : {{phone.phone_type}}</h6>
+                        <p class="card-text mb-2">{{phone.area_code}}-{{phone.phone_num}}</p>
+                    </div>
+                    <div *ngFor="let date of contact.dates">
+                        <h6 class="card-subtitle text-secondary">Date : {{date.date_type}}</h6>
+                        <p class="card-text mb-2">{{ date.date_value | date: 'yyyy-MM-dd'}}</p>
+                    </div>
+                    <a routerLink="modify/{{contact.contact_id}}" class="btn btn-primary mr-1">Modify</a>
+                    <button (click)="onDeleteClick(contact.contact_id, contact.first_name)" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="loaded && contacts.length == 0">
+        <h5 class="mt-3 text-center" style="color: #777777;">There are no contacts</h5>
+    </div>
+    <div *ngIf="!loaded">
+        <h5>Loading...</h5>
+    </div>
+</div>

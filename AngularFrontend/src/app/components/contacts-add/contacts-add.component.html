@@ -1,0 +1,245 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <a routerLink="/" class="btn-btn-link">
+        <i class="fa fa-arrow-circle-o-left"> Back to Display</i>
+      </a>
+    </div>
+    <div class="col-md-6"></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Add Contact
+    </div>
+    <div class="card-body">
+      <form #contactEditForm="ngForm" (ngSubmit)="onSubmit(contactEditForm)">
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" class="form-control mb-1" name="first_name" #contactFirstName="ngModel" [ngClass]="{
+                'is-invalid': contactFirstName.errors && contactFirstName.touched
+              }" [(ngModel)]="contact.first_name" minlength="1" maxlength="25" pattern="^[a-zA-Z ]*$" required />
+          <div [hidden]="!contactFirstName.errors?.required" class="invalid-feedback">
+            First name required
+          </div>
+          <div [hidden]="!contactFirstName.errors?.minlength" class="invalid-feedback">
+            Must be atleast 1 character
+          </div>
+          <div [hidden]="!contactFirstName.errors?.pattern" class="invalid-feedback">
+            First name is not valid (Use alphabets only)
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="middle_name">Middle Name</label>
+          <input type="text" class="form-control mb-1" name="middle_name" #contactMidName="ngModel" [ngClass]="{
+                'is-invalid': contactMidName.errors && contactMidName.touched
+              }" [(ngModel)]="contact.middle_name" pattern="^[a-zA-Z ]*$" minlength="1" maxlength="25" />
+
+          <div [hidden]="!contactMidName.errors?.minlength" class="invalid-feedback">
+            Must be atleast 1 character
+          </div>
+          <div [hidden]="!contactMidName.errors?.pattern" class="invalid-feedback">
+            Middle name is not valid (Use alphabets only)
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" class="form-control mb-1" name="last_name" #contactLastName="ngModel" [ngClass]="{
+                'is-invalid': contactLastName.errors && contactLastName.touched
+              }" [(ngModel)]="contact.last_name" minlength="1" maxlength="25" pattern="^[a-zA-Z ]*$" required />
+          <div [hidden]="!contactLastName.errors?.required" class="invalid-feedback">
+            Last name required
+          </div>
+          <div [hidden]="!contactLastName.errors?.minlength" class="invalid-feedback">
+            Must be atleast 1 character
+          </div>
+          <div [hidden]="!contactLastName.errors?.pattern" class="invalid-feedback">
+            Last name is not valid (Use alphabets only)
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            Addresses
+          </div>
+          <div class="card-body">
+            <div *ngFor="let item of contact.addresses; let i = index">
+              <!-- <div class="form-group"> -->
+              <div class="row">
+                <label class="col mt-1"><b>Address {{i + 1}}</b></label><br>
+                <button class="col-2 btn btn-outline-danger mb-3 mt-3 ml-5 mr-5" type="button"
+                  (click)="deleteAddress(i)">Delete</button>
+              </div>
+
+              <label for="address_type" class="mt-1">Address Type</label>
+              <input type="text" class="form-control mb-1" name="address_type-{{i}}" #contactAddType="ngModel"
+                [ngClass]="{
+                      'is-invalid': contactAddType.errors && contactAddType.touched
+                    }" [(ngModel)]="contact.addresses[i].address_type" minlength="1" pattern="^[a-zA-Z ]*$" />
+              <div [hidden]="!contactAddType.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+              <div [hidden]="!contactAddType.errors?.pattern" class="invalid-feedback">
+                Address type is not valid (Use alphabets only)
+              </div>
+
+              <label for="address" class="mt-1">Address</label>
+              <input type="text" class="form-control mb-1" name="address-{{i}}" #contactAddress="ngModel" [ngClass]="{
+                      'is-invalid': contactAddress.errors && contactAddress.touched
+                    }" [(ngModel)]="contact.addresses[i].address" minlength="1" maxlength="80" />
+              <div [hidden]="!contactAddress.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+
+              <label for="city" class="mt-1">City</label>
+              <input type="text" class="form-control mb-1" name="city-{{i}}" #contactCity="ngModel" [ngClass]="{
+                      'is-invalid': contactCity.errors && contactCity.touched
+                    }" [(ngModel)]="contact.addresses[i].city" minlength="1" maxlength="30" pattern="^[a-zA-Z ]*$" />
+              <div [hidden]="!contactCity.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+              <div [hidden]="!contactCity.errors?.pattern" class="invalid-feedback">
+                City is not valid (Use alphabets only)
+              </div>
+
+              <label for="state" class="mt-1">State</label>
+              <input type="text" class="form-control mb-1" name="state-{{i}}" #contactState="ngModel" [ngClass]="{
+                      'is-invalid': contactState.errors && contactState.touched
+                    }" [(ngModel)]="contact.addresses[i].states" minlength="1" maxlength="30" pattern="^[a-zA-Z ]*$" />
+              <div [hidden]="!contactState.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+              <div [hidden]="!contactState.errors?.pattern" class="invalid-feedback">
+                State is not valid (Use alphabets only)
+              </div>
+
+              <label for="zip" class="mt-1">Zip Code</label>
+              <input type="text" class="form-control mb-1" name="zip-{{i}}" #contactZip="ngModel" [ngClass]="{
+                      'is-invalid': contactZip.errors && contactZip.touched
+                    }" [(ngModel)]="contact.addresses[i].zip" minlength="1" maxlength="5" pattern="^[0-9]*$"
+                required />
+              <div [hidden]="!contactZip.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 number
+              </div>
+              <div [hidden]="!contactZip.errors?.pattern" class="invalid-feedback">
+                Zip code should not start with zero. Please enter numbers only.
+              </div>
+              <div [hidden]="!contactZip.errors?.required" class="invalid-feedback">
+                Zip code is required
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-secondary mb-3 mt-3 ml-5 mr-5" type="button" (click)="addAddress()">Add more
+            addresses</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            Phone numbers
+          </div>
+          <div class="card-body">
+            <div *ngFor="let phone of contact.phones; let i = index">
+
+              <div class="row">
+                <label class="col mt-1"><b>Phone {{i + 1}}</b></label><br>
+                <button class="col-2 btn btn-outline-danger mb-3 mt-3 ml-5 mr-5" type="button"
+                  (click)="deletePhone(i)">Delete</button>
+              </div>
+
+              <label for="phone_type" class="mt-1">Phone Type</label>
+              <input type="text" class="form-control mb-1" name="phone_type-{{i}}" #contactPhType="ngModel" [ngClass]="{
+                      'is-invalid': contactPhType.errors && contactPhType.touched
+                    }" [(ngModel)]="contact.phones[i].phone_type" minlength="1" pattern="^[a-zA-Z ]*$" />
+              <div [hidden]="!contactPhType.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+              <div [hidden]="!contactPhType.errors?.pattern" class="invalid-feedback">
+                Phone type is not valid (Use alphabets only)
+              </div>
+
+              <label class="mt-1">Phone number (Area code - Number)</label>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control mb-1" name="area-{{i}}" #contactAreaCode="ngModel" [ngClass]="{
+                  'is-invalid': contactAreaCode.errors && contactAreaCode.touched
+                }" [(ngModel)]="contact.phones[i].area_code" minlength="3" maxlength="3" pattern="^[0-9]*$" required />
+                <div [hidden]="!contactAreaCode.errors?.minlength" class="invalid-feedback">
+                  Must be 3 digits
+                </div>
+                <div [hidden]="!contactAreaCode.errors?.pattern" class="invalid-feedback">
+                  AreaCode is not valid (Use numbers only)
+                </div>
+                <div [hidden]="!contactAreaCode.errors?.required" class="invalid-feedback">
+                  AreaCode required
+                </div>
+                <label class="mr-5 ml-5">-</label>
+                <input type="text" class="form-control mb-1" name="phonenum-{{i}}" #contactPhoneNum="ngModel" [ngClass]="{
+                  'is-invalid': contactPhoneNum.errors && contactPhoneNum.touched
+                }" [(ngModel)]="contact.phones[i].phone_num" minlength="7" maxlength="7" pattern="^[0-9]*$" required />
+                <div [hidden]="!contactPhoneNum.errors?.minlength" class="invalid-feedback">
+                  Must be 7 digits
+                </div>
+                <div [hidden]="!contactPhoneNum.errors?.pattern" class="invalid-feedback">
+                  Number is not valid (Use numbers only)
+                </div>
+                <div [hidden]="!contactPhoneNum.errors?.required" class="invalid-feedback">
+                  Number required
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <button class="btn btn-secondary mb-3 mt-3 ml-5 mr-5" type="button" (click)="addPhone()">Add more
+            phone numbers</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            Dates
+          </div>
+          <div class="card-body">
+            <div *ngFor="let date of contact.dates; let i = index">
+
+              <div class="row">
+                <label class="col mt-1"><b>Date {{i + 1}}</b></label><br>
+                <button class="col-2 btn btn-outline-danger mb-3 mt-3 ml-5 mr-5" type="button"
+                  (click)="deleteDate(i)">Delete</button>
+              </div>
+
+              <label for="date_type" class="mt-1">Date Type</label>
+              <input type="text" class="form-control mb-1" name="date_type-{{i}}" #contactDaType="ngModel" [ngClass]="{
+                      'is-invalid': contactDaType.errors && contactDaType.touched
+                    }" [(ngModel)]="contact.dates[i].date_type" minlength="1" pattern="^[a-zA-Z ]*$" />
+              <div [hidden]="!contactDaType.errors?.minlength" class="invalid-feedback">
+                Must be atleast 1 character
+              </div>
+              <div [hidden]="!contactDaType.errors?.pattern" class="invalid-feedback">
+                Date type is not valid (Use alphabets only)
+              </div>
+
+              <label for="date_value" class="mt-1">Date</label>
+
+              <input type="text" class="form-control mb-1" name="dateval-{{i}}" #contactDate="ngModel" [ngClass]="{
+                  'is-invalid': contactDate.errors && contactDate.touched
+                }" placeholder="yyyy-mm-dd" [(ngModel)]="contact.dates[i].date_value"
+                pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$" required />
+              <div [hidden]="!contactDate.errors?.pattern" class="invalid-feedback">
+                Please enter date in yyyy-mm-dd format only
+              </div>
+              <div [hidden]="!contactDate.errors?.required" class="invalid-feedback">
+                Number required
+              </div>
+
+
+            </div>
+          </div>
+          <button class="btn btn-secondary mb-3 mt-3 ml-5 mr-5" type="button" (click)="addDate()">Add more
+            dates</button>
+        </div>
+
+
+
+
+        <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+      </form>
+    </div>
+  </div>
+</div>
