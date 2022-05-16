@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "angular2-flash-messages": "^3.0.1",
-    "async": "^3.2.0",
+    "async": "^3.2.2",
     "body-parser": "^1.19.0",
     "cjs": "0.0.11",
     "cors": "^2.8.5",
